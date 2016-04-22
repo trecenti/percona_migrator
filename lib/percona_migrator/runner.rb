@@ -1,40 +1,10 @@
 require 'open3'
 
+require 'percona_migrator/signal_error'
+require 'percona_migrator/no_status_error'
+require 'percona_migrator/command_not_found_error'
+
 module PerconaMigrator
-  class Error < StandardError; end
-
-  # Used when for whatever reason we couldn't get the spawned process'
-  # status.
-  class NoStatusError < Error
-    def message
-      'Status could not be retrieved'.freeze
-    end
-  end
-
-  # Used when the spawned process failed by receiving a signal.
-  # pt-online-schema-change returns "SIGSEGV (signal 11)" on failures.
-  class SignalError < Error
-    attr_reader :status
-
-    # Constructor
-    #
-    # @param status [Process::Status]
-    def initialize(status)
-      super
-      @status = status
-    end
-
-    def message
-      status.to_s
-    end
-  end
-
-  class CommandNotFoundError < Error
-    def message
-      'Please install pt-online-schema-change. Check: https://www.percona.com/doc/percona-toolkit for further details'
-    end
-  end
-
   # It executes pt-online-schema-change commands in a new process and gets its
   # output and status
   class Runner
