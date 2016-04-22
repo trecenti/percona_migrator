@@ -25,7 +25,7 @@ module PerconaMigrator
           # @param direction [Symbol] :up or :down
           def migrate(direction)
             reconnect_with_percona
-            include_foreigner if defined?(Foreigner)
+            include_foreigner
 
             ::Lhm.migration = self
             original_migrate(direction)
@@ -34,10 +34,7 @@ module PerconaMigrator
           # Includes the Foreigner's Mysql2Adapter implemention in
           # PerconaMigratorAdapter to support foreign keys
           def include_foreigner
-            Foreigner::Adapter.safe_include(
-              :PerconaMigratorAdapter,
-              Foreigner::ConnectionAdapters::Mysql2Adapter
-            )
+            require 'percona_migrator/foreigner' if defined?(Foreigner)
           end
 
           # Make all connections in the connection pool to use PerconaAdapter
