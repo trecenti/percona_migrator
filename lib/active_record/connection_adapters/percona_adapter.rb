@@ -85,7 +85,7 @@ module ActiveRecord
         true
       end
 
-      def new_column(field, default, type, null, collation)
+      def new_column(field, default, type, null, collation, extra = "")
         Column.new(field, default, type, null, collation)
       end
 
