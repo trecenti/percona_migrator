@@ -23,6 +23,10 @@ module ActiveRecord
 
       connection_options = { mysql_adapter: mysql2_connection }
 
+      puts(
+        "Migrations will execute with PerconaMigrator\n" \
+        "for more information visit https://github.com/redbooth/percona_migrator"
+      )
       ConnectionAdapters::PerconaMigratorAdapter.new(
         runner,
         logger,

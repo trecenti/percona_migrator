@@ -1,5 +1,17 @@
 require 'spec_helper'
 
+describe ActiveRecord::Base do
+  describe '.percona_connection' do
+    it 'logs information about the usage of PerconaMigrator' do
+      expected_message = "Migrations will execute with PerconaMigrator" \
+                         "\nfor more information visit https://github.com/redbooth/percona_migrator"
+
+      expect(described_class).to receive(:puts).with(expected_message)
+      described_class.percona_connection({})
+    end
+  end
+end
+
 describe ActiveRecord::ConnectionAdapters::PerconaMigratorAdapter do
   describe ActiveRecord::ConnectionAdapters::PerconaMigratorAdapter::Column do
     let(:field) { double(:field) }
